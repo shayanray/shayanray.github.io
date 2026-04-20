@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shayan Ray — Senior ML Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --paper: #f5f2ec;
+    --accent: #c8602a;
+    --accent2: #1a3a5c;
+    --muted: #6b6560;
+    --rule: rgba(13,13,13,0.12);
+    --gutter: clamp(1.5rem, 5vw, 5rem);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.6;
+  }
+
+  /* ── HEADER / HERO ── */
+  header {
+    min-height: 100svh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: var(--gutter);
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    right: -120px; top: -80px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,96,42,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.1s;
+  }
+
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2.5rem;
+  }
+
+  nav a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--accent); }
+
+  .hero-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 0 2rem;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.3s;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(3.5rem, 10vw, 9rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.4s;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent2);
+  }
+
+  .hero-tagline {
+    margin-top: 2.5rem;
+    max-width: 540px;
+    font-size: 1.05rem;
+    color: var(--muted);
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.65s;
+  }
+
+  .hero-cta {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.8s;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 1.8rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn:hover { background: var(--ink); color: var(--paper); }
+  .btn.filled { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.filled:hover { background: #a84e22; border-color: #a84e22; }
+
+  .hero-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.95s;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+  }
+
+  .stat-item { text-align: center; }
+  .stat-num {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--accent2);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .location-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  .location-badge span { color: var(--accent); }
+
+  /* ── SECTION SHARED ── */
+  section {
+    padding: clamp(4rem, 8vw, 8rem) var(--gutter);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+  }
+
+  .section-rule {
+    height: 1px;
+    background: var(--rule);
+    margin-top: 0.5rem;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  /* ── EXPERTISE ── */
+  .expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 0;
+    border: 1px solid var(--rule);
+  }
+
+  .expertise-card {
+    padding: 2rem 1.8rem;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    transition: background 0.2s;
+  }
+  .expertise-card:hover { background: rgba(26,58,92,0.04); }
+
+  .expertise-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    color: var(--accent2);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.8rem;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid var(--rule);
+    color: var(--muted);
+    background: transparent;
+  }
+
+  /* ── EXPERIENCE ── */
+  .experience-list { display: flex; flex-direction: column; gap: 0; }
+
+  .exp-item {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    padding: 3rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  @media (max-width: 680px) {
+    .exp-item { grid-template-columns: 1fr; gap: 1rem; }
+    .hero-stats { gap: 1.5rem; }
+    nav ul { display: none; }
+  }
+
+  .exp-meta { }
+
+  .exp-company {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent2);
+  }
+
+  .exp-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 0.3rem;
+  }
+
+  .exp-period {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    letter-spacing: 0.08em;
+  }
+
+  .exp-content ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .exp-content li {
+    position: relative;
+    padding-left: 1.2rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .exp-content li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.75rem;
+    top: 0.1em;
+  }
+
+  .exp-content li strong { color: var(--ink); font-weight: 500; }
+
+  /* ── PUBLICATIONS ── */
+  .pub-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5px;
+    background: var(--rule);
+  }
+
+  .pub-card {
+    background: var(--paper);
+    padding: 1.8rem;
+    transition: background 0.2s;
+  }
+  .pub-card:hover { background: #ede9e1; }
+
+  .pub-venue {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .pub-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+
+  /* ── CERTIFICATIONS ── */
+  .cert-flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  .cert-pill {
+    padding: 0.5rem 1.1rem;
+    border: 1px solid var(--rule);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .cert-pill:hover { border-color: var(--accent2); color: var(--accent2); }
+
+  /* ── CONTACT / FOOTER ── */
+  footer {
+    padding: clamp(4rem, 8vw, 8rem) var(--gutter) 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .footer-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .footer-headline em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .footer-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.1rem;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .footer-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── DIVIDER ── */
+  .big-divider {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(4rem, 12vw, 11rem);
+    font-weight: 900;
+    color: rgba(13,13,13,0.04);
+    line-height: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0 var(--gutter);
+    user-select: none;
+    letter-spacing: -0.03em;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ HERO ══════════════════════ -->
+<header>
+  <nav>
+    <span class="nav-logo">SR / Portfolio</span>
+    <ul>
+      <li><a href="#expertise">Expertise</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero-body">
+    <p class="hero-eyebrow">Senior Machine Learning Engineer</p>
+    <h1>Shayan<br/><em>Ray</em></h1>
+    <p class="hero-tagline">
+      Building production-grade LLM Agents, Generative AI systems, and conversational AI at Stripe — 
+      with 19.5 years of engineering and 6.5 years of applied ML/science behind every model.
+    </p>
+    <div class="hero-cta">
+      <a href="mailto:shayan.ray@gmail.com" class="btn filled">Get in Touch</a>
+      <a href="https://scholar.google.com/citations?hl=en&user=kKcuLEgAAAAJ" target="_blank" class="btn">Google Scholar</a>
+      <a href="https://devpost.com/shayanray" target="_blank" class="btn">Hackathons</a>
+    </div>
+  </div>
+
+  <div class="hero-footer">
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">19.5</span>
+        <span class="stat-label">Years Eng.</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">6.5</span>
+        <span class="stat-label">Years ML/AS</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">5+</span>
+        <span class="stat-label">Publications</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">3</span>
+        <span class="stat-label">Hackathon Wins</span>
+      </div>
+    </div>
+    <p class="location-badge">📍 <span>Seattle, WA</span> · H1B (I-140 approved)</p>
+  </div>
+</header>
+
+<div class="big-divider">Machine Learning</div>
+
+<!-- ══════════════════════ EXPERTISE ══════════════════════ -->
+<section id="expertise">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <div>
+      <h2>Areas of Expertise</h2>
+      <div class="section-rule"></div>
+    </div>
+  </div>
+
+  <div class="expertise-grid">
+    <div class="expertise-card reveal">
+      <h3>Generative AI & LLMs</h3>
+      <p style="font-size:0.88rem;color:var(--muted);">End-to-end GenAI applications with fine-tuning, RAG, agentic workflows, and responsible AI guardrails.</p>
+      <div class="tag-list">
+        <span class="tag">LLM Agents</span>
+        <span class="tag">RAG</span>
+        <span class="tag">RLHF</span>
+        <span class="tag">LoRA / PEFT</span>
+        <span class="tag">SFT</span>
+        <span class="tag">Prompt Engineering</span>
+      </div>
+    </div>
+    <div class="expertise-card reveal">
+      <h3>NLP & Conversational AI</h3>
+      <p style="font-size:0.88rem;color:var(--muted);">Sentence transformers, semantic matching, task-oriented dialogue systems, and Alexa-scale ranking models.</p>
+      <div class="tag-list">
+        <span class="tag">NLP</span>
+        <span class="tag">BERT</span>
+        <span class="tag">Sentence Transformers</span>
+        <span class="tag">Chatbots</span>
+        <span class="tag">Dialog Systems</span>
+      </div>
+    </div>
+    <div class="expertise-card reveal">
+      <h3>Personalization & Ranking</h3>
+      <p style="font-size:0.88rem;color:var(--muted);">User-affinity deep learning models, multi-arm bandits, off-policy evaluation, and reward shaping at scale.</p>
+      <div class="tag-list">
+        <span class="tag">Reinforcement Learning</span>
+        <span class="tag">Multi-Arm Bandits</span>
+        <span class="tag">Deep Learning</span>
+        <span class="tag">A/B Testing</span>
+      </div>
+    </div>
+    <div class="expertise-card reveal">
+      <h3>ML Infrastructure</h3>
+      <p style="font-size:0.88rem;color:var(--muted);">Production ML pipelines, e2e deployment frameworks, AWS SageMaker, privacy-certified systems across global regions.</p>
+      <div class="tag-list">
+        <span class="tag">PyTorch</span>
+        <span class="tag">PySpark</span>
+        <span class="tag">Airflow</span>
+        <span class="tag">AWS</span>
+        <span class="tag">SageMaker</span>
+        <span class="tag">Bedrock</span>
+      </div>
+    </div>
+    <div class="expertise-card reveal">
+      <h3>Software Engineering</h3>
+      <p style="font-size:0.88rem;color:var(--muted);">13 years as SDE/Lead SDE across fintech, AI, and enterprise domains. Microservices, REST APIs, CI/CD.</p>
+      <div class="tag-list">
+        <span class="tag">Python</span>
+        <span class="tag">Java / J2EE</span>
+        <span class="tag">Spark</span>
+        <span class="tag">Spring</span>
+        <span class="tag">Microservices</span>
+      </div>
+    </div>
+    <div class="expertise-card reveal">
+      <h3>Teaching & Community</h3>
+      <p style="font-size:0.88rem;color:var(--muted);">ACM certified reviewer, AWS conference speaker, tech trainer, AWS blog author on GenAI and Responsible AI.</p>
+      <div class="tag-list">
+        <span class="tag">AWS reinvent</span>
+        <span class="tag">Tech Training</span>
+        <span class="tag">ACM Review</span>
+        <span class="tag">AWS Blog</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ EXPERIENCE ══════════════════════ -->
+<section id="experience">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <div>
+      <h2>Professional Experience</h2>
+      <div class="section-rule"></div>
+    </div>
+  </div>
+
+  <div class="experience-list">
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <div class="exp-company">Stripe</div>
+        <div class="exp-role">Senior MLE</div>
+        <div class="exp-period">Sept 2025 — Present · 5+ months</div>
+      </div>
+      <div class="exp-content">
+        <ul>
+          <li>Designing, building, training, evaluating, and deploying <strong>ML models and AI Agents</strong> in production for Stripe Capital financing opportunities.</li>
+          <li>Collaborating cross-functionally with engineers, data scientists, PMs, and risk managers to deliver ML-powered products.</li>
+          <li>Contributing to and influencing <strong>ML architecture</strong> at Stripe Capital org.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <div class="exp-company">Amazon</div>
+        <div class="exp-role">Applied Scientist II</div>
+        <div class="exp-period">June 2019 — Sept 2025 · 6.3 years</div>
+      </div>
+      <div class="exp-content">
+        <ul>
+          <li>Built <strong>Agentic AI enterprise workflows</strong> with LLMs and RAG for Knowledge Operations, using LLM-as-judge for evaluation; applied RLHF, RLAIF, LoRA, and model quantization to boost GenAI performance.</li>
+          <li>Developed <strong>high-recall, low-latency sentence-transformer models</strong> for Alexa LLM routing, significantly reducing LLM inferencing costs.</li>
+          <li>Automated Alexa NFI public beta launch across 5 en-* locales, reducing skill onboarding SLA by <strong>50%</strong>.</li>
+          <li>Achieved <strong>25% traffic increase in en-US</strong> and 50%+ across en-* locales via fine-tuned model routing and customer affinity signals.</li>
+          <li>Reduced customer defects by <strong>11.7%</strong> with BERT-based personalized deep learning selection and ranking models.</li>
+          <li>Built a privacy-certified (HIPAA, GDPR) <strong>E2E ML deployment framework</strong> covering NA, EU, and FE regions.</li>
+          <li>Developer and speaker at <strong>AWS re:Invent 2024</strong> — LLM Hallucinations Workshop.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <div class="exp-company">Cognizant</div>
+        <div class="exp-role">Architect — Technology</div>
+        <div class="exp-period">Feb 2009 — Aug 2017 · 8.5 years</div>
+      </div>
+      <div class="exp-content">
+        <ul>
+          <li>End-to-end solution design and full-stack development for Banking & Financial domain enterprise applications.</li>
+          <li>Forked and customized Jenkins OSS to build an internal <strong>CI/CD ecosystem</strong>.</li>
+          <li>Performance-tuned web apps with <strong>15–25% improvements</strong> across multiple client projects.</li>
+          <li>Led <strong>10+ developers for 5+ years</strong> through multi-million-dollar delivery engagements.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <div class="exp-company">TCS</div>
+        <div class="exp-role">Senior Software Developer</div>
+        <div class="exp-period">Dec 2005 — Jan 2009 · 3 years</div>
+      </div>
+      <div class="exp-content">
+        <ul>
+          <li>Full-stack J2EE and Oracle development for EU Insurance domain clients.</li>
+          <li>Lead developer for an <strong>in-house J2EE Batch Framework</strong>; Automation Lead for enterprise component deployments.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="big-divider">Research</div>
+
+<!-- ══════════════════════ RESEARCH ══════════════════════ -->
+<section id="research">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <div>
+      <h2>Patents, Publications & AWS Blogs</h2>
+      <div class="section-rule"></div>
+    </div>
+  </div>
+
+  <div class="pub-grid reveal">
+    <div class="pub-card">
+      <div class="pub-venue">Patent Pending</div>
+      <div class="pub-title">User Affinity Based Routing Decisions to Personalize Conversational AI Systems</div>
+    </div>
+    <div class="pub-card">
+      <div class="pub-venue">AMLC 2025 · Top 5%</div>
+      <div class="pub-title">SOP-Bench: Complex Industrial SOPs for Evaluating LLM Agents</div>
+    </div>
+    <div class="pub-card">
+      <div class="pub-venue">NAACL 2024</div>
+      <div class="pub-title">LLM-Based Frameworks for API Argument Filling in Task-Oriented Conversational Systems</div>
+    </div>
+    <div class="pub-card">
+      <div class="pub-venue">EACL 2024</div>
+      <div class="pub-title">GrounDial: Human-norm Grounded Safe Dialog Response Generation</div>
+    </div>
+    <div class="pub-card">
+      <div class="pub-venue">AMLC 2024 Tutorial</div>
+      <div class="pub-title">Improve LLM Performance by Continuous Fine Tuning Driven by Compound AI</div>
+    </div>
+    <div class="pub-card">
+      <div class="pub-venue">AMLC 2023</div>
+      <div class="pub-title">Scalable Self Learning for Domain Specific Context Aware Rules for Alexa</div>
+    </div>
+    <div class="pub-card">
+      <div class="pub-venue">AWS Blog 2025</div>
+      <div class="pub-title">LLM Continuous Self-Instruct Fine Tuning Framework Powered by Compound AI on Amazon SageMaker</div>
+    </div>
+    <div class="pub-card">
+      <div class="pub-venue">AWS Blog 2024</div>
+      <div class="pub-title">Improve Factual Consistency with LLM Debates</div>
+    </div>
+    <div class="pub-card">
+      <div class="pub-venue">AWS Blog 2024</div>
+      <div class="pub-title">Reducing Hallucinations in LLMs with Custom Intervention Using Amazon Bedrock Agents</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ EDUCATION ══════════════════════ -->
+<section id="education">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <div>
+      <h2>Education</h2>
+      <div class="section-rule"></div>
+    </div>
+  </div>
+
+  <div class="experience-list">
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <div class="exp-company">Stony Brook University</div>
+        <div class="exp-role">M.S. Computer Science</div>
+        <div class="exp-period">Aug 2017 — May 2019 · Stony Brook, NY</div>
+        <div class="exp-period" style="margin-top:0.6rem;color:var(--accent2);">CGPA: 3.58 / 4.0</div>
+      </div>
+      <div class="exp-content">
+        <ul>
+          <li><strong>Focus Area:</strong> Machine Learning and Data Science</li>
+          <li>Natural Language Processing (CSE 538), Computer Vision (CSE 527), Big Data Analytics (CSE 545)</li>
+          <li>Machine Learning (CSE 512), Probability and Statistics for Data Scientists (CSE 544)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <div class="exp-company">RCC Institute of IT</div>
+        <div class="exp-role">B.Tech — Information Technology</div>
+        <div class="exp-period">July 2000 — June 2004 · Kolkata, India</div>
+        <div class="exp-period" style="margin-top:0.6rem;color:var(--accent2);">83.22 / 100 · Rank 4</div>
+      </div>
+      <div class="exp-content">
+        <ul>
+          <li>Graduated with <strong>Rank 4</strong> in the department.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ CERTIFICATIONS ══════════════════════ -->
+<section>
+  <div class="section-header reveal">
+    <span class="section-num">05</span>
+    <div>
+      <h2>Select Certifications</h2>
+      <div class="section-rule"></div>
+    </div>
+  </div>
+
+  <div class="cert-flow reveal">
+    <span class="cert-pill">ACM Certified Reviewer (2025)</span>
+    <span class="cert-pill">AWS Certified Speaker — Senior (2024)</span>
+    <span class="cert-pill">AWS Certified Speaker — Associate (2024)</span>
+    <span class="cert-pill">NLP Specialization — Coursera (2023)</span>
+    <span class="cert-pill">AWS ML Specialty (2022)</span>
+    <span class="cert-pill">Data Science Nanodegree — Udacity (2022)</span>
+    <span class="cert-pill">NLP Nanodegree — Udacity (2021)</span>
+    <span class="cert-pill">AWS Solutions Architect Associate (2020)</span>
+    <span class="cert-pill">ML with TensorFlow on GCP — Coursera (2018)</span>
+    <span class="cert-pill">TOGAF 9 Foundation & Certified (2014)</span>
+    <span class="cert-pill">Certified Scrum Master (2014)</span>
+    <span class="cert-pill">IBM Certified SOA Solution Designer (2014)</span>
+  </div>
+</section>
+
+<!-- ══════════════════════ CONTACT / FOOTER ══════════════════════ -->
+<footer id="contact">
+  <div class="reveal">
+    <p class="footer-headline">Let's build<br/><em>something</em><br/>together.</p>
+  </div>
+  <div class="footer-links reveal">
+    <a href="mailto:shayan.ray@gmail.com" class="footer-link">shayan.ray@gmail.com</a>
+    <a href="https://linkedin.com/in/shayanray" target="_blank" class="footer-link">LinkedIn</a>
+    <a href="https://scholar.google.com/citations?hl=en&user=kKcuLEgAAAAJ" target="_blank" class="footer-link">Google Scholar</a>
+    <a href="https://devpost.com/shayanray" target="_blank" class="footer-link">Devpost</a>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Shayan Ray. Seattle, WA.</span>
+    <span>Senior ML Engineer · Conversational AI · LLM Agents</span>
+  </div>
+</footer>
+
+<script>
+  // Intersection Observer for scroll reveals
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        entry.target.style.transitionDelay = `${(i % 4) * 0.08}s`;
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
